@@ -12,6 +12,9 @@ import Collections from "@/pages/Collections";
 import OrderHistory from "@/pages/OrderHistory";
 import Wishlist from "@/pages/Wishlist";
 import Search from "@/pages/Search";
+import { inject } from "@vercel/analytics";
+
+inject();
 
 function App() {
   return (
