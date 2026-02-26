@@ -2,6 +2,7 @@
 import { Home, Search, Heart, ShoppingBag, User } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
+import { useShop } from '../context/ShopContext';
 
 const navItems = [
   { icon: Home, label: 'Home', path: '/' },
@@ -12,6 +13,11 @@ const navItems = [
 ];
 
 export default function MobileNav() {
+  const { wishlist, cart } = useShop();
+
+  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const wishlistCount = wishlist.length;
+
   return (
     <nav className="bg-white/80 backdrop-blur-md border-t border-slate-100 pb-safe">
       <div className="flex justify-around items-center h-16">
@@ -27,7 +33,19 @@ export default function MobileNav() {
               )
             }
           >
-            <Icon size={24} strokeWidth={2} />
+            <div className="relative">
+              <Icon size={24} strokeWidth={2} />
+              {label === 'Wishlist' && wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-2 bg-primary text-white text-[10px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center">
+                  {wishlistCount > 99 ? '99+' : wishlistCount}
+                </span>
+              )}
+              {label === 'Cart' && cartCount > 0 && (
+                <span className="absolute -top-1 -right-2 bg-primary text-white text-[10px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center">
+                  {cartCount > 99 ? '99+' : cartCount}
+                </span>
+              )}
+            </div>
             <span className="text-[10px] font-medium">{label}</span>
           </NavLink>
         ))}

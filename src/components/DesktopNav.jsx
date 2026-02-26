@@ -2,6 +2,7 @@ import { Search, Heart, ShoppingBag, User, Menu } from "lucide-react";
 import { NavLink, Link } from "react-router-dom";
 import clsx from "clsx";
 import logoImg from "../assets/logo.webp";
+import { useShop } from "../context/ShopContext";
 
 const categories = [
   { label: "Home", path: "/" },
@@ -10,6 +11,11 @@ const categories = [
 ];
 
 export default function DesktopNav() {
+  const { wishlist, cart } = useShop();
+
+  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const wishlistCount = wishlist.length;
+
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
       <div className="container mx-auto px-6 h-20 flex items-center justify-between gap-8">
@@ -67,12 +73,22 @@ export default function DesktopNav() {
               className="p-2 hover:bg-slate-50 rounded-full transition-colors text-slate-700 hover:text-primary relative"
             >
               <Heart size={22} />
+              {wishlistCount > 0 && (
+                <span className="absolute top-0 right-0 bg-primary text-white text-[10px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center translate-x-1 -translate-y-1">
+                  {wishlistCount > 99 ? '99+' : wishlistCount}
+                </span>
+              )}
             </Link>
             <Link
               to="/cart"
               className="p-2 hover:bg-slate-50 rounded-full transition-colors text-slate-700 hover:text-primary relative"
             >
               <ShoppingBag size={22} />
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 bg-primary text-white text-[10px] min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center translate-x-1 -translate-y-1">
+                  {cartCount > 99 ? '99+' : cartCount}
+                </span>
+              )}
             </Link>
           </div>
         </div>
